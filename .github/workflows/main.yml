@@ -1,10 +1,10 @@
-name: CI/CD Workflow
+name: CI/CD Workflow  # Define the name of your CI/CD workflow
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
+      - Data-Mining  # Adjust the branch name as needed for running in the feature branch
 jobs:
-  validate:
+  validate:  # Define a job for code validation
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -13,7 +13,7 @@ jobs:
       run: |
         # Add your code validation commands here
         # For example: linting, static analysis, etc.
-  tests:
+  tests:  # Define a job for running tests
     runs-on: ubuntu-latest
     needs: validate
     steps:
@@ -25,7 +25,7 @@ jobs:
     - name: Run tests
       run: |
         # Add your test commands here
-  docker-build:
+  docker-build:  # Define a job for building Docker artifacts
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -35,8 +35,10 @@ jobs:
       run: |
         # Add commands to build Docker images
         # For example: docker build -t your-image-name .
-  deploy:
+  deploy:  # Define a job for deployment
     runs-on: ubuntu-latest
     needs: docker-build
     steps:
     - name: Checkout code
+      uses: actions/checkout@v2
+    # Add deployment steps as needed
