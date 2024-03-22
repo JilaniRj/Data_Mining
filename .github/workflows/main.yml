@@ -1,45 +1,24 @@
-name: CI/CD Workflow
+name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
+      - main
 jobs:
-  validate:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Validate code changes
-      run: |
-        # Add your code validation commands here
-        # For example: linting, static analysis, etc
-  tests:
-    runs-on: ubuntu-latest
-    needs: validate
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        # Add commands to install dependencies
-    - name: Run tests
-      run: |
-        # Add your test commands here
-  docker-build:
-    runs-on: ubuntu-latest
-    needs: tests
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Build Docker artifacts
-      run: |
-        # Add commands to build Docker images
-        # For example: docker build -t your-image-name .
-  deploy:
-    runs-on: ubuntu-latest
-    needs: docker-build
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Deploy/update pipelines
-      run: |
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Log in to Docker hub
+        uses: docker/login-action@v2
+        with:
+          username: neharp 
+          password: Madhuneha
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: neharp/demo1.0:latest
