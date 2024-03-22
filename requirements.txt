@@ -1,0 +1,16 @@
+numpy
+pandas
+matplotlib.pyplot
+seaborn
+plotly
+flask
+sqlalchemy
+dash
+logging
+pulp
+scipy
+datetime
+random
+psycopg2
+scikit-learn
+csv
