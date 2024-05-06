@@ -1,36 +1,39 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
-
 trigger:
-- main
+- master
 
 pool:
-  vmImage: ubuntu-latest
-strategy:
-  matrix:
-    Python27:
-      python.version: '2.7'
-    Python35:
-      python.version: '3.5'
-    Python36:
-      python.version: '3.6'
-    Python37:
-      python.version: '3.7'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
+    versionSpec: '3.x'
+    addToPath: true
 
 - script: |
     python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
+    # Install project dependencies if needed
+    # For example:
+    # python -m pip install package1 package2
+  displayName: 'Upgrade pip and install dependencies if needed'
 
 - script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+    # Commands to build your application (if needed)
+  displayName: 'Build application'
+
+- script: |
+    # Commands to run unit tests
+    # Modify this command based on how you usually run your tests
+    # Example: python -m pytest tests/
+    # Example: python -m unittest discover -s tests/ -p '*_test.py'
+    # Example: python my_test_script.py
+    # Replace the examples above with the actual command you use to run tests
+    echo "Replace this line with the command to run your tests"
+  displayName: 'Run unit tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-*.xml'
+    testRunTitle: 'Unit Tests'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+
