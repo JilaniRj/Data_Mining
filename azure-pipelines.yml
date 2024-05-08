@@ -30,7 +30,7 @@ steps:
   displayName: 'Package application'
 
 - task: VSTest@2
-  displayName: 'Run UNIT Test'
+  
 
 - task: PublishBuildArtifacts@1
   inputs:
