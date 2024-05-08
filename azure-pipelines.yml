@@ -7,24 +7,18 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.12'  # Specify major and minor version only
+    versionSpec: '3.x'  # Specifying a major version only, e.g., 3.x, to avoid compatibility issues
     addToPath: true
-
-- script: |
-    python -m pip install --upgrade pip
-  displayName: 'Upgrade pip'
 
 - script: |
     echo "No build step required for Python projects."
   displayName: 'Build application'
 
-- script: |
-    echo "No tests to run."
-  displayName: 'Skip running tests'
-
-- script: |
-    echo "No packaging step required for Python projects."
-  displayName: 'Package application'
+- task: VSTest@2
+  displayName: 'Run unit tests'
+  inputs:
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
 
 - task: PublishBuildArtifacts@1
   inputs:
