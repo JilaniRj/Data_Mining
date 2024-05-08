@@ -2,31 +2,34 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: UseDotNet@2
+- task: UsePythonVersion@0
   inputs:
-    packageType: 'sdk'
-    version: '6.x'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-  displayName: 'Use .NET SDK'
+    versionSpec: '3.9'
+    addToPath: true
 
 - script: |
-    echo "Building the application..."
-    dotnet build YourProjectName.csproj /p:WebPublishMethod=Package /p:PackageLocation="$(build.artifactStagingDirectory)"
-  displayName: 'Build application'
+    echo "Installing dependencies..."
+    python -m pip install -r requirements.txt
+  displayName: 'Install dependencies'
 
-- task: VSTest@2
+- script: |
+    echo "Running unit tests..."
+    python -m pytest
   displayName: 'Run unit tests'
 
 - script: |
     echo "Packaging the application..."
-    dotnet publish YourProjectName.csproj -c Release -o $(build.artifactStagingDirectory)
+    # Perform any packaging steps here, such as copying files to an artifact staging directory
+    mkdir -p $(build.artifactStagingDirectory)/packaged-application
+    cp -r ./* $(build.artifactStagingDirectory)/packaged-application
   displayName: 'Package application'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)'
+    pathToPublish: '$(build.artifactStagingDirectory)/packaged-application'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
+
