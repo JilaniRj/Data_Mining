@@ -11,17 +11,29 @@ steps:
     addToPath: true
 
 - script: |
-    echo "No build step required for Python projects."
+    echo "Building the application..."
+    # Custom tasks to build the application
+    # For example:
+    # /p:WebPublishMethod=Package
+    # /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Build application'
 
-- script: |
-    python -m pip install pytest
-    pytest
+- task: VSTest@2
   displayName: 'Run unit tests'
 
-- task: PublishTestResults@2
+- script: |
+    echo "Packaging the application..."
+    # Custom task to package the built application
+    # For example:
+    # /p:WebPublishMethod=Package
+    # /p:PackageLocation="$(build.artifactStagingDirectory)"
+  displayName: 'Package application'
+
+- task: VSTest@2
+  displayName: 'Run UNIT Test'
+
+- task: PublishBuildArtifacts@1
   inputs:
-    testResultsFiles: '**/TEST-*.xml'
-    testRunTitle: 'Unit Tests'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-  condition: succeededOrFailed()
+    pathToPublish: '$(build.artifactStagingDirectory)'
+    artifactName: 'packaged-application'
+    publishLocation: 'Container'
