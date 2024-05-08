@@ -12,7 +12,7 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    # Install project dependencies if needed
+    # Install project dependencies if needed.
     # For example:
     # python -m pip install package1 package2
   displayName: 'Upgrade pip and install dependencies if needed'
