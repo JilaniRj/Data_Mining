@@ -1,44 +1,41 @@
 trigger:
 - master
-
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: 'windows-latest'
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.9'
+    versionSpec: '3.12'
     addToPath: true
-
 - script: |
-    echo "Checking for requirements.txt..."
-    if [ -f requirements.txt ]; then
-        echo "Installing dependencies..."
-        python -m pip install -r requirements.txt
-    else
-        echo "No requirements.txt found. Skipping dependency installation."
-    fi
-  displayName: 'Install dependencies'
-
-- script: |
-    echo "Installing pytest..."
-    python -m pip install pytest
-  displayName: 'Install pytest'
-
-- script: |
-    echo "Running unit tests..."
-    python -m pytest
+    echo "Building the application..."
+    rem Custom tasks to build the application
+    rem For example:
+    rem /p:WebPublishMethod=Package
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
+  displayName: 'Build application'
+- task: VSTest@2
   displayName: 'Run unit tests'
-
 - script: |
     echo "Packaging the application..."
-    # Perform any packaging steps here, such as copying files to an artifact staging directory
-    mkdir -p $(build.artifactStagingDirectory)/packaged-application
-    cp -r ./* $(build.artifactStagingDirectory)/packaged-application
+    rem Custom task to package the built application
+    rem For example:
+    rem /p:WebPublishMethod=Package
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Package application'
-
+- task: VSTest@2
+  displayName: 'Run UNIT Test'
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)/packaged-application'
+    pathToPublish: '$(build.artifactStagingDirectory)'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
+
+
+
+
+
+
+
+
+
