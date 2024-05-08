@@ -11,8 +11,13 @@ steps:
     addToPath: true
 
 - script: |
-    echo "Installing dependencies..."
-    python -m pip install -r requirements.txt
+    echo "Checking for requirements.txt..."
+    if [ -f requirements.txt ]; then
+        echo "Installing dependencies..."
+        python -m pip install -r requirements.txt
+    else
+        echo "No requirements.txt found. Skipping dependency installation."
+    fi
   displayName: 'Install dependencies'
 
 - script: |
@@ -32,4 +37,3 @@ steps:
     pathToPublish: '$(build.artifactStagingDirectory)/packaged-application'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
-
