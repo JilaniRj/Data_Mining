@@ -15,15 +15,19 @@ steps:
   displayName: 'Upgrade pip'
 
 - script: |
-    echo "No dependencies to install."
+    python -m pip install -r requirements.txt
   displayName: 'Install dependencies'
+
+- script: |
+    python -m pip install pytest
+  displayName: 'Install pytest'
 
 - script: |
     echo "No build step required for Python projects."
   displayName: 'Build application'
 
 - script: |
-    pytest
+    python -m pytest
   displayName: 'Run unit tests'
 
 - script: |
