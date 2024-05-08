@@ -7,7 +7,7 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'  # Specifying a major version only, e.g., 3.x, to avoid compatibility issues
+    versionSpec: '3.12'  # Specifying a major version only, e.g., 3.x, to avoid compatibility issues
     addToPath: true
 
 - script: |
