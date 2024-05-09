@@ -5,7 +5,7 @@ pool:  # Defines the execution environment for the pipeline
 steps:  # Defines the series of steps to be executed in the pipeline
 - task: UsePythonVersion@0  # Uses the "UsePythonVersion" task to configure the Python version
   inputs:
-    versionSpec: '3.12'  # Specifies Python version 3.12
+    versionSpec: '3.12'  # Specifies Python version 3.12.
     addToPath: true  # Adds Python 3.12 to the system PATH
 - script: |  # Executes a script
     echo "Building the application..."  # Displays a message indicating the start of the build process
