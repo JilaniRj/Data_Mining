@@ -1,11 +1,13 @@
 trigger:
-- master
+- main
 pool:
   vmImage: 'windows-latest'
 steps:
+- checkout: self  # Checkout the repository
+  persistCredentials: true
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'
+    versionSpec: '3.12'
     addToPath: true
 - script: |
     echo "Building the application..."
@@ -13,7 +15,7 @@ steps:
   displayName: 'Build application'
 - script: |
     echo "Running unit tests..."
-    python updated_test_notebook.py  # Update to the new test file name
+    python Data_Mining/test_notebook.py  # Update to the correct file path
   displayName: 'Run unit tests'
 - script: |
     echo "Packaging the application..."
@@ -26,4 +28,3 @@ steps:
     pathToPublish: '$(build.artifactStagingDirectory)'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
-    
