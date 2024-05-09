@@ -5,13 +5,15 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.12'
+    versionSpec: '3.x'
     addToPath: true
 - script: |
     echo "Building the application..."
     REM Add custom build commands here
   displayName: 'Build application'
-- task: VSTest@2
+- script: |
+    echo "Running unit tests..."
+    python test_notebook.py  # Execute the test file
   displayName: 'Run unit tests'
 - script: |
     echo "Packaging the application..."
