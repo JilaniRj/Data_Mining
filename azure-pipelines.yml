@@ -1,23 +1,21 @@
 trigger:
-- main
+- master
 pool:
   vmImage: 'windows-latest'
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'  # Use the latest Python 3.x version available
+    versionSpec: '3.12'
     addToPath: true
 - script: |
     echo "Building the application..."
-    # Add custom build commands here
+    REM Add custom build commands here
   displayName: 'Build application'
-- script: |
-    echo "Running unit tests..."
-    # Add commands to run unit tests here
+- task: VSTest@2
   displayName: 'Run unit tests'
 - script: |
     echo "Packaging the application..."
-    # Add custom packaging commands here
+    REM Add custom packaging commands here
   displayName: 'Package application'
 - task: VSTest@2
   displayName: 'Run UNIT Test'
@@ -26,12 +24,3 @@ steps:
     pathToPublish: '$(build.artifactStagingDirectory)'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
-
-
-
-
-
-
-
-
-
