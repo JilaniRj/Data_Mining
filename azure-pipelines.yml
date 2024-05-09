@@ -1,11 +1,11 @@
 trigger:
-- master
+- main
 pool:
   vmImage: 'windows-latest'
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'
+    versionSpec: '3.12'
     addToPath: true
 - script: |
     echo "Building the application..."
