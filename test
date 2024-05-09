@@ -1,0 +1,9 @@
+import unittest
+from your_module import your_function
+class TestYourFunction(unittest.TestCase):
+    def test_case_1(self):
+        self.assertEqual(your_function(input_value), expected_output)
+    def test_case_2(self):
+        self.assertEqual(your_function(input_value), expected_output)
+if __name__ == '__main__':
+    unittest.main()
