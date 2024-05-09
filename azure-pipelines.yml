@@ -1,5 +1,5 @@
 trigger:  # Specifies the trigger for the pipeline
-- master  # Pipeline will run when changes are pushed to the "master" branch
+- main  # Pipeline will run when changes are pushed to the "master" branch
 pool:  # Defines the execution environment for the pipeline
   vmImage: 'windows-latest'  # Specifies that the pipeline should run on a Windows agent with the latest available version
 steps:  # Defines the series of steps to be executed in the pipeline
