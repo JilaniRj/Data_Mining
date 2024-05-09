@@ -1,41 +1,32 @@
-trigger:
-- master
-pool:
-  vmImage: 'windows-latest'
-steps:
-- task: UsePythonVersion@0
+trigger:  # Specifies the trigger for the pipeline
+- master  # Pipeline will run when changes are pushed to the "master" branch
+pool:  # Defines the execution environment for the pipeline
+  vmImage: 'windows-latest'  # Specifies that the pipeline should run on a Windows agent with the latest available version
+steps:  # Defines the series of steps to be executed in the pipeline
+- task: UsePythonVersion@0  # Uses the "UsePythonVersion" task to configure the Python version
   inputs:
-    versionSpec: '3.12'
-    addToPath: true
-- script: |
-    echo "Building the application..."
-    rem Custom tasks to build the application
+    versionSpec: '3.12'  # Specifies Python version 3.12
+    addToPath: true  # Adds Python 3.12 to the system PATH
+- script: |  # Executes a script
+    echo "Building the application..."  # Displays a message indicating the start of the build process
+    rem Custom tasks to build the application  # Comments explaining custom build tasks
     rem For example:
     rem /p:WebPublishMethod=Package
     rem /p:PackageLocation="$(build.artifactStagingDirectory)"
-  displayName: 'Build application'
-- task: VSTest@2
-  displayName: 'Run unit tests'
-- script: |
-    echo "Packaging the application..."
-    rem Custom task to package the built application
+  displayName: 'Build application'  # Provides a descriptive name for the step
+- task: VSTest@2  # Uses the "VSTest" task to run unit tests
+  displayName: 'Run unit tests'  # Provides a descriptive name for the step
+- script: |  # Executes a script
+    echo "Packaging the application..."  # Displays a message indicating the start of the packaging process
+    rem Custom task to package the built application  # Comments explaining custom packaging tasks
     rem For example:
     rem /p:WebPublishMethod=Package
     rem /p:PackageLocation="$(build.artifactStagingDirectory)"
-  displayName: 'Package application'
-- task: VSTest@2
-  displayName: 'Run UNIT Test'
-- task: PublishBuildArtifacts@1
+  displayName: 'Package application'  # Provides a descriptive name for the step
+- task: VSTest@2  # Runs unit tests for the application
+  displayName: 'Run UNIT Test'  # Provides a descriptive name for the step
+- task: PublishBuildArtifacts@1  # Publishes the artifacts generated during the build and packaging processes
   inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)'
-    artifactName: 'packaged-application'
-    publishLocation: 'Container'
-
-
-
-
-
-
-
-
-
+    pathToPublish: '$(build.artifactStagingDirectory)'  # Specifies the path to the artifacts
+    artifactName: 'packaged-application'  # Specifies the name of the artifact
+    publishLocation: 'Container'  # Specifies the location where the artifacts should be published
