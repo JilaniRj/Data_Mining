@@ -1,49 +1,45 @@
 import unittest
-import importlib
-import subprocess
-class TestNotebooks(unittest.TestCase):
-    def setUp(self):
-        # Convert notebooks to Python scripts before running tests
-        subprocess.run(["jupyter", "nbconvert", "--to", "python", "*.ipynb"], check=True)
-    def test_03_01_204(self):
-        notebook = importlib.import_module('03-01-204_Data_Infrastructure_design')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.calculate_total(2, 3)  # Assuming function 'calculate_total' exists
-        self.assertEqual(result, 5, "Expected result is 5")
-    def test_06_02_2024(self):
-        notebook = importlib.import_module('06-02-2024_Phase2_Increasing_production')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.calculate_total(10, 20)  # Assuming function 'calculate_total' exists
-        self.assertEqual(result, 30, "Expected result is 30")
-    def test_12_01_2024(self):
-        notebook = importlib.import_module('12-01-2024_Impact_Calculator')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.calculate_impact(5, 2)  # Assuming function 'calculate_impact' exists
-        self.assertEqual(result, 10, "Expected result is 10")
-    def test_12_12_2023(self):
-        notebook = importlib.import_module('12-12-2023_Simulation')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.run_simulation()  # Assuming function 'run_simulation' exists
-        self.assertTrue(result, "Simulation ran successfully")
-    def test_20_02_2024(self):
-        notebook = importlib.import_module('20-02-2024_Financial_Analysis')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.analyze_financials()  # Assuming function 'analyze_financials' exists
-        self.assertIsNotNone(result, "Financial analysis completed successfully")
-    def test_23_01_2024(self):
-        notebook = importlib.import_module('23-01-2024_equipment_environment')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.test_environment_setup()  # Assuming function 'test_environment_setup' exists
-        self.assertTrue(result, "Environment setup tests passed")
-    def test_28_12_2023(self):
-        notebook = importlib.import_module('28-12-2023_Frame_Work')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.test_framework()  # Assuming function 'test_framework' exists
-        self.assertTrue(result, "Framework tests passed")
-    def test_30_01_2024(self):
-        notebook = importlib.import_module('30-01-2024_Project_Timeline_and_base_data_model')
-        self.assertTrue(notebook)  # Ensure notebook is imported successfully
-        result = notebook.test_timeline()  # Assuming function 'test_timeline' exists
-        self.assertIsNotNone(result, "Project timeline and data model tests completed successfully")
+from Data_Infrastructure_design import *
+from Phase2_Increasing_production import *
+from Impact_Calculator import *
+from Simulation import *
+from Financial_Analysis import *
+from equipment_environment import *
+from Frame_Work import *
+from Project_Timeline_and_base_data_model import *
+class TestDataMining(unittest.TestCase):
+    def test_data_infrastructure_design(self):
+        # Test if the function to create data infrastructure returns a non-empty result
+        result = create_data_infrastructure()
+        self.assertTrue(len(result) > 0)
+    def test_phase2_increasing_production(self):
+        # Test if the function to increase production in phase 2 returns a positive result
+        result = increase_production_phase2()
+        self.assertGreater(result, 0)
+    def test_impact_calculator(self):
+        # Test if the impact calculator returns a valid impact value for given inputs
+        result = calculate_impact(input_data)
+        self.assertIsNotNone(result)
+    def test_simulation(self):
+        # Test if the simulation function returns expected output for a given input
+        result = run_simulation(input_parameters)
+        expected_output = 1000  # Placeholder for expected output
+        self.assertEqual(result, expected_output)
+    def test_financial_analysis(self):
+        # Test if the financial analysis function returns valid financial metrics
+        result = perform_financial_analysis(data)
+        self.assertGreater(result['ROI'], 0)
+    def test_equipment_environment(self):
+        # Test if the equipment and environment setup function completes without errors
+        setup_result = setup_equipment_environment()
+        self.assertTrue(setup_result)
+    def test_frame_work(self):
+        # Test if the framework functions perform as expected
+        result = framework_function(input_data)
+        self.assertEqual(result, expected_result)
+    def test_project_timeline_and_base_data_model(self):
+        # Test if the project timeline and data model function returns valid output
+        result = generate_timeline_and_data_model(project_parameters)
+        self.assertIsNotNone(result)
 if __name__ == '__main__':
     unittest.main()
