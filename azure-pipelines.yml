@@ -1,28 +1,34 @@
 trigger:
-- main
+- master
 pool:
   vmImage: 'windows-latest'
 steps:
-- checkout: self  # Checkout the repository
-  persistCredentials: true
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.12'
     addToPath: true
 - script: |
     echo "Building the application..."
-    REM Add custom build commands here
+    rem Custom tasks to build the application
+    rem For example:
+    rem /p:WebPublishMethod=Package
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Build application'
-- script: |
-    echo "Running unit tests..."
-    python Data_Mining/tests.dll  # Update to the correct file path
+- task: VSTest@2
   displayName: 'Run unit tests'
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\tests.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
 - script: |
     echo "Packaging the application..."
-    REM Add custom packaging commands here
+    rem Custom task to package the built application
+    rem For example:
+    rem /p:WebPublishMethod=Package
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Package application'
-- task: VSTest@2
-  displayName: 'Run UNIT Test'
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: '$(build.artifactStagingDirectory)'
