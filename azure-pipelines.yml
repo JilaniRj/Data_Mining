@@ -15,7 +15,7 @@ steps:
   displayName: 'Build application'
 - script: |
     echo "Running unit tests..."
-    python Data_Mining/test_notebook.py  # Update to the correct file path
+    python Data_Mining/tests.dll  # Update to the correct file path
   displayName: 'Run unit tests'
 - script: |
     echo "Packaging the application..."
