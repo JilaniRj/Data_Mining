@@ -13,7 +13,7 @@ steps:
     # For example:
     # python build_script.py
     # mkdir $(System.DefaultWorkingDirectory)/artifacts
-    # cp generated_artifacts $(System.DefaultWorkingDirectory)/artifacts
+    # cp generated_artifacts $(System.DefaultWorkingDirectory)/artifacts.
   displayName: 'Build application'
 - task: VSTest@2
   displayName: 'Run unit tests'
