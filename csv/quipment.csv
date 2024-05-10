@@ -1,0 +1,10 @@
+Equipment,Type,haul_capacity,haul_power,Fuel_consumed,time_period,ore_name,total_reserve,average_grade,mining_rate,drilling_equipment_name,drilling_rate,hauling_equipment_name,hauling_rate,Section,Type,Depth,Length,Width
+Excavator,Rotary,100,4362.34,210,0,gold,11556,4.56,0.63,Drill1,0.6,Truck1,0.75,East,Surface,200m,1000m,800m
+,Hammer,100,4362.34,160,0,silver,365722,92,,Drill2,0,Truck2,0.9,East,Surface,200m,1000m,800m
+,Diesel,3.24,2000,210,200,zinc,358,7.8,,,,Loader1,0,East,Surface,200m,10250m,400m 
+,Diesel,,,,200,iron,1257,62,,,,,,East,Surface,200m,12080,400m 
+,Electrical,,,,2.5,,,,,,,,,East,Surface,200m,10250m,400m 
+,,,,,,,,,,,,,,West,Underground,200m,12081,400m 
+,,,,,,,,,,,,,,West,Underground,200m,10250m,400m 
+,,,,,,,,,,,,,,West,Underground,200m,10250m,400m 
+,,,,,,,,,,,,,,West,Underground,800m,500m,10m

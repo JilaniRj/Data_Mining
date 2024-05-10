@@ -1,0 +1,10 @@
+Section,Type,Depth,Length,Width
+East,Surface,200,1000,800
+East,Surface,200,1000,800
+East,Surface,200,10250,400
+East,Surface,200,12080,400
+East,Surface,200,10250,400
+West,Underground,200,12081,400
+West,Underground,200,10250,400
+West,Underground,200,10250,400
+West,Underground,800,500,10
