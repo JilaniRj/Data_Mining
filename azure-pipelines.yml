@@ -13,13 +13,17 @@ stages:
         steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: '3.x'
+              versionSpec: '3.12'
               addToPath: true
           - script: pip install -r requirements.txt
             displayName: 'Install dependencies'
             continueOnError: true  # Continue if requirements.txt is not found
 
-      - job: RunUnitTests
+  - stage: RunUnitTests
+    displayName: 'Run Unit Tests'
+    dependsOn: Build
+    jobs:
+      - job: RunTests
         displayName: 'Run Unit Tests'
         steps:
           - task: UsePythonVersion@0
@@ -32,6 +36,7 @@ stages:
 
   - stage: Publish
     displayName: 'Publish Artifacts'
+    dependsOn: RunUnitTests
     jobs:
       - job: PublishArtifacts
         displayName: 'Publish Build Artifacts'
