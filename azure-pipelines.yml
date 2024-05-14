@@ -13,35 +13,53 @@ stages:
         steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: '3.12'
+              versionSpec: '3.x'
               addToPath: true
-          - script: pip install -r requirements.txt
+          - script: |
+              python -m pip install --upgrade pip
+              python -m pip install matplotlib==3.4.3
             displayName: 'Install dependencies'
-            continueOnError: true  # Continue if requirements.txt is not found
+            continueOnError: true  # Continue if there are errors during installation
 
-  - stage: RunUnitTests
-    displayName: 'Run Unit Tests'
-    dependsOn: Build
-    jobs:
-      - job: RunTests
+      - job: RunUnitTests
         displayName: 'Run Unit Tests'
+        dependsOn: InstallDependencies
         steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: '3.12'
+              versionSpec: '3.x'
               addToPath: true
           - script: |
               python -m unittest discover -s tests -p '*_test.py'
             displayName: 'Run unit tests'
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFiles: '**/TEST-*.xml'
+              testRunTitle: 'Unit Tests'
+            displayName: 'Publish Test Results'
 
   - stage: Publish
     displayName: 'Publish Artifacts'
-    dependsOn: RunUnitTests
     jobs:
+      - job: DummyJob
+        displayName: 'Dummy Job'
+        steps:
+          - script: echo "This is a dummy job."
+            displayName: 'Dummy Step'
+
       - job: PublishArtifacts
         displayName: 'Publish Build Artifacts'
+        dependsOn: DummyJob
         steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              artifactName: 'package'
+              downloadPath: '$(Pipeline.Workspace)/path/to/artifacts'
+            displayName: 'Download Build Artifact'
           - task: PublishBuildArtifacts@1
             inputs:
-              pathtoPublish: '$(System.DefaultWorkingDirectory)/path/to/artifacts'
+              pathtoPublish: '$(Pipeline.Workspace)/path/to/artifacts'
               artifactName: 'package'
+            displayName: 'Publish Build Artifact'
+
