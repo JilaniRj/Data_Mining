@@ -9,28 +9,28 @@ steps:
     addToPath: true
 - script: |
     echo "Building the application..."
-    # Add commands to build the application and generate artifacts
-    # For example:
-    # python build_script.py
-    # mkdir $(System.DefaultWorkingDirectory)/artifacts
-    # cp generated_artifacts $(System.DefaultWorkingDirectory)/artifacts
+    rem Custom tasks to build the application
+    rem For example:
+    rem /p:WebPublishMethod=Package
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Build application'
 - task: VSTest@2
   displayName: 'Run unit tests'
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\Data_Mining\tests.dll
+      **\tests.dll
+      !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
 - script: |
     echo "Packaging the application..."
     rem Custom task to package the built application
     rem For example:
     rem /p:WebPublishMethod=Package
-    rem /p:PackageLocation="$(System.DefaultWorkingDirectory)/artifacts"
+    rem /p:PackageLocation="$(build.artifactStagingDirectory)"
   displayName: 'Package application'
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(System.DefaultWorkingDirectory)/artifacts'
+    pathToPublish: '$(build.artifactStagingDirectory)'
     artifactName: 'packaged-application'
     publishLocation: 'Container'
