@@ -1,30 +1,29 @@
 trigger:
-- main  # Adjust the branch name as needed
+- main  # Adjust the branch name if needed
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Building the application...
-  displayName: 'Building the application'
-
-- task: VSTest@2
-  displayName: 'Run unit tests'
+- task: UsePythonVersion@0
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    testAssemblyVer2: |
-      **\*Test*.py
-    searchFolder: '$(System.DefaultWorkingDirectory)'
+    versionSpec: '3.x'
+    addToPath: true
 
-- script: echo Publishing the packaged application...
-  displayName: 'Publishing the packaged application'
-  env:
-    PackageLocation: '$(build.artifactStagingDirectory)'
+- script: 'python -m pip install --upgrade pip'
+  displayName: 'Install pip'
+
+- script: 'pip install -r requirements.txt'
+  displayName: 'Install dependencies'
+
+- script: 'python -m unittest discover -s tests'
+  displayName: 'Run unit tests'
+
+- script: 'python setup.py sdist --formats=gztar -d "$(Build.ArtifactStagingDirectory)"'
+  displayName: 'Package the built application'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifacts'
   inputs:
-    PathtoPublish: '$(PackageLocation)'
-    ArtifactName: 'packaged-application'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'miningequipment'
     publishLocation: 'Container'
