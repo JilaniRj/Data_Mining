@@ -12,7 +12,7 @@ steps:
     # Add commands to build the application and generate artifacts
     # For example:
     # python build_script.py
-    # mkdir $(System.DefaultWorkingDirectory)/artifacts.
+    # mkdir $(System.DefaultWorkingDirectory)/artifacts
     # cp generated_artifacts $(System.DefaultWorkingDirectory)/artifacts
   displayName: 'Build application'
 - task: VSTest@2
