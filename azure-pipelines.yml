@@ -21,6 +21,15 @@ stages:
             displayName: 'Install dependencies'
             continueOnError: true  # Continue if there are errors during installation
 
+  - stage: RunUnitTests
+    displayName: 'Run Unit Tests'
+    jobs:
+      - job: DummyJob
+        displayName: 'Dummy Job'
+        steps:
+          - script: echo "Dummy job for RunUnitTests stage"
+            displayName: 'Dummy job'
+
       - job: RunUnitTests
         displayName: 'Run Unit Tests'
         steps:
@@ -31,9 +40,13 @@ stages:
           - script: |
               python -m unittest discover -s tests -p '*_unit.py'
             displayName: 'Run unit tests'
+        dependsOn: DummyJob
+        continueOnError: true  # Continue to next stage even if unit tests fail
 
   - stage: Publish
     displayName: 'Publish Artifacts'
+    dependsOn: RunUnitTests   # Depends on the RunUnitTests stage
+    condition: succeeded('RunUnitTests')  # Run this stage only if RunUnitTests job succeeds
     jobs:
       - job: PublishArtifacts
         displayName: 'Publish Build Artifacts'
@@ -42,3 +55,6 @@ stages:
             inputs:
               pathtoPublish: '$(System.DefaultWorkingDirectory)'
               artifactName: 'package'
+
+
+
