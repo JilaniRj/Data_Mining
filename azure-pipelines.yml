@@ -1,49 +1,47 @@
 trigger:
-  - main  # Adjust the branch name as needed
+  branches:
+    include:
+      - main
+jobs:
+- job: Build_and_Test
+  displayName: 'Building the application and running tests'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.12' # Use Python 3.x
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install dependencies'
+  - script: |
+      if [ -d "tests" ] && [ "$(ls -A tests/*_test.py)" ]; then
+        python -m unittest discover -s tests -p '*_test.py'
+      else
+        echo "No test files found. Skipping test execution."
+      fi
+    displayName: 'Run unit tests'
 
-pool:
-  vmImage: 'ubuntu-latest'
+  #- script: |
+      #python -m pip install pytest
+      #pytest tests/
+    #displayName: 'Run Unit Tests'
 
-stages:
-  - stage: Build
-    displayName: 'Build and Test'
-    jobs:
-      - job: InstallDependencies
-        displayName: 'Install Dependencies'
-        steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.9'
-              addToPath: true
-          - script: |
-              python -m pip install --upgrade pip
-              python -m pip install -r requirements.txt
-            displayName: 'Install dependencies'
-            continueOnError: true  # Continue if there are errors during installation
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/pytest.xml'
+      testRunTitle: 'Unit Tests'
 
-  - stage: RunUnitTests
-    displayName: 'Run Unit Tests'
-    jobs:
-      - job: RunUnitTests
-        displayName: 'Run Unit Tests'
-        steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.9'
-              addToPath: true
-          - script: |
-              python -m unittest discover -s $(Build.SourcesDirectory) -p '*_unit.py'
-            displayName: 'Run unit tests'
 
-  - stage: Publish
-    displayName: 'Publish Artifacts'
-    dependsOn: RunUnitTests   # Depends on the RunUnitTests stage
-    condition: succeeded('RunUnitTests')  # Run this stage only if RunUnitTests job succeeds
-    jobs:
-      - job: PublishArtifacts
-        displayName: 'Publish Build Artifacts'
-        steps:
-          - task: PublishBuildArtifacts@1
-            inputs:
-              pathtoPublish: '$(System.DefaultWorkingDirectory)'
-              artifactName: 'package'
+
+  #- task: PublishTestResults@2
+    #inputs:
+      #testResultsFiles: 'tests/pytest-results.xml'
+      #testRunTitle: 'Pytest Test Results'
+      #searchFolder: '$(System.DefaultWorkingDirectory)'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)'
+      artifactName: 'build_output'
+      
