@@ -22,11 +22,12 @@ jobs:
         echo "No test files found. Skipping test execution."
       fi
     displayName: 'Run unit tests'
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/pytest.xml'
-      testRunTitle: 'Unit Tests'
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)'
       artifactName: 'build_output'
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()  # Only run if the previous step (unit tests) succeeded or failed
+    inputs:
+      testResultsFiles: '**/pytest.xml'
+      testRunTitle: 'Unit Tests'
