@@ -16,32 +16,17 @@ jobs:
       pip install -r requirements.txt
     displayName: 'Install dependencies'
   - script: |
-      if [ -d "tests" ] && [ "$(ls -A tests/*_test.py)" ]; then
+      if [ -d "tests" ] && [ -n "$(find tests -type f -name '*_test.py')" ]; then
         python -m unittest discover -s tests -p '*_test.py'
       else
         echo "No test files found. Skipping test execution."
       fi
     displayName: 'Run unit tests'
-
-  #- script: |
-      #python -m pip install pytest
-      #pytest tests/
-    #displayName: 'Run Unit Tests'
-
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/pytest.xml'
       testRunTitle: 'Unit Tests'
-
-
-
-  #- task: PublishTestResults@2
-    #inputs:
-      #testResultsFiles: 'tests/pytest-results.xml'
-      #testRunTitle: 'Pytest Test Results'
-      #searchFolder: '$(System.DefaultWorkingDirectory)'
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)'
       artifactName: 'build_output'
-      
