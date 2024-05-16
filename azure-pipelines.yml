@@ -4,7 +4,7 @@ trigger:
       - main
 jobs:
 - job: Build_and_Test
-  displayName: 'Build Application and Test by using Unit tests'
+  displayName: 'Building, Testing and Packaging'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
