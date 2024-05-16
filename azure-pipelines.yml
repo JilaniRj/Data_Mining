@@ -29,5 +29,4 @@ jobs:
   - task: PublishTestResults@2
     condition: succeededOrFailed()  # Only run if the previous step (unit tests) succeeded or failed
     inputs:
-      testResultsFiles: '**/pytest.xml'
       testRunTitle: 'Unit Tests'
