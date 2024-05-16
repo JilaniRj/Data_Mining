@@ -3,7 +3,9 @@ import pandas as pd
 
 # Import the class you want to test
 import sys
-sys.path.append('sys.path.append(r'C:\Users\CW\Downloads\Data_mining\Data_mining\src')')  # Adjust the path as needed
+
+sys.path.append(r'C:\Users\CW\Downloads\Data_mining\Data_mining\src')  # Adjust the path as needed
+
 
 # Now you can import modules from src
 from simulation_timeframe import MiningSimulation
